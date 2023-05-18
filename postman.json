@@ -12,7 +12,7 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:4567/orders/7",
+					"raw": "http://localhost:4567/orders/sdfsdafsd",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -20,7 +20,7 @@
 					"port": "4567",
 					"path": [
 						"orders",
-						"7"
+						"sdfsdafsd"
 					]
 				}
 			},
@@ -46,13 +46,33 @@
 			"response": []
 		},
 		{
+			"name": "OBTER POR ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:4567/orders/12",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4567",
+					"path": [
+						"orders",
+						"12"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "ADICIONAR",
 			"request": {
 				"method": "PUT",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"customer\": \"Igor\",\n    \"items\": [{\"product\":\"Tv\",\"qty\":6.0}]\n}",
+					"raw": "{\n    \"customer\": \"Nanah\",\n    \"items\": [{\"product\":\"LG\",\"qty\":6.0}]\n}",
 					"options": {
 						"raw": {
 							"language": "json"

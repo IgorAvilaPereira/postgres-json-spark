@@ -17,10 +17,11 @@ public class OrderController {
     
     public OrderController(){
         this.orderDAO = new OrderDAO();
+        this.gson = new Gson();
     }
 
     public String listar() {        
-        return new Gson().toJson(this.orderDAO.listar());
+        return this.gson.toJson(this.orderDAO.listar());
     }
 
     public boolean excluir(int id) {       
@@ -33,5 +34,9 @@ public class OrderController {
 
     public boolean atualizar(Order order) {
         return this.orderDAO.atualizar(order);
+    }
+
+    public String obter(int id) {
+        return this.gson.toJson(this.orderDAO.obter(id));        
     }
 }

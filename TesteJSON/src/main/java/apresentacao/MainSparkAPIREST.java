@@ -21,8 +21,13 @@ public class MainSparkAPIREST {
         OrderController controller  = new OrderController();          
         
         get("/orders", (request, response) -> {                        
-//          response.type("application/json");
+            response.type("application/json");    
             return controller.listar();                        
+        });
+        
+        get("/orders/:id", (request, response) -> {                        
+            response.type("application/json");    
+            return controller.obter(Integer.parseInt(request.params(":id")));                              
         });
         
         delete("/orders/:id", (request, response) -> {
