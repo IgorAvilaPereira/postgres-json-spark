@@ -26,7 +26,7 @@ public class OrderDAO {
     
     public ArrayList<Order> listar() {
         try {
-            ArrayList<Order> vetOrders = new ArrayList<Order>();
+            ArrayList<Order> vetOrders = new ArrayList();
             String sql = "SELECT id, info->>'customer' as customer, info->>'items' as items FROM orders ORDER BY id;";
             try (Connection conn = new ConexaoPostgreSQL().getConexao()) {
                 PreparedStatement ps = conn.prepareStatement(sql);                
@@ -47,7 +47,7 @@ public class OrderDAO {
     }
     
     
-    public void atualizar(Order order) {
+    public boolean atualizar(Order order) {
         try {
             String sql = "UPDATE orders SET info = ?::JSON WHERE id = ?;";
             try (Connection conn = new ConexaoPostgreSQL().getConexao()) {
@@ -56,9 +56,11 @@ public class OrderDAO {
                 ps.setInt(2, order.getId());
                 ps.executeUpdate();
             }
+            return true;
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+        return false;
     }
     
     public Order obter(int id) {
@@ -82,30 +84,34 @@ public class OrderDAO {
         return null;
     }
     
-    public void excluir(int id) {
+    public boolean excluir(int id) {
         try {
             String sql = "DELETE FROM orders WHERE id = ?";
-            Connection conn = new ConexaoPostgreSQL().getConexao();
-            PreparedStatement ps = conn.prepareStatement(sql);            
-            ps.setInt(1, id);
-            ps.executeUpdate();
-            conn.close();
-        } catch (Exception e) {
+            try (Connection conn = new ConexaoPostgreSQL().getConexao()) {
+                PreparedStatement ps = conn.prepareStatement(sql);
+                ps.setInt(1, id);
+                ps.executeUpdate();
+            }
+            return true;
+        } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+        return false;
     }
 
-    public void adicionar(Order order) {
+    public boolean adicionar(Order order) {
         try {
             String sql = "INSERT INTO orders (info) VALUES (?::JSON)";
-            Connection conn = new ConexaoPostgreSQL().getConexao();
-            PreparedStatement ps = conn.prepareStatement(sql);            
-            ps.setObject(1, this.gson.toJson(order));
-            ps.executeUpdate();
-            conn.close();
-        } catch (Exception e) {
+            try (Connection conn = new ConexaoPostgreSQL().getConexao()) {
+                PreparedStatement ps = conn.prepareStatement(sql);
+                ps.setObject(1, this.gson.toJson(order));
+                ps.executeUpdate();
+            }
+            return true;
+        } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+        return false;
     }
 
 }

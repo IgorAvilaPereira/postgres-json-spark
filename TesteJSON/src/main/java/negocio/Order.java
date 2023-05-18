@@ -11,8 +11,7 @@ import java.util.ArrayList;
  *
  * @author iapereira
  */
-public class Order {
-    
+public class Order {    
     private int id;
     @Expose 
     private String customer;

@@ -4,10 +4,40 @@
  */
 package apresentacao;
 
+import com.google.gson.Gson;
+import negocio.Order;
+import negocio.OrderController;
+import persistencia.OrderDAO;
+import static spark.Spark.delete;
+import static spark.Spark.get;
+import static spark.Spark.patch;
+import static spark.Spark.put;
+
 /**
  *
  * @author iapereira
  */
 public class MainSpark {
+    public static void main(String[] args) {
+        OrderController controller  = new OrderController();          
+        
+        get("/orders", (request, response) -> {            
+            return controller.listar();            
+        });
+        
+        delete("/orders/:id", (request, response) -> {
+            return controller.excluir(Integer.parseInt(request.params(":id")));
+        });
+        
+        patch("/orders", (request, response) -> {
+            Order order = new Gson().fromJson(request.body(), Order.class);
+            return controller.atualizar(order);            
+        });
+        
+        put("/orders", (request, response) -> {
+            Order order = new Gson().fromJson(request.body(), Order.class);
+            return controller.adicionar(order);            
+        });
+    }
     
 }
