@@ -1,6 +1,6 @@
 # postgres-json-spark
 
-* Orders API developed on Spark JAVA, JDBC and PostgreSQL (dump.sql)
+* Orders API developed on Spark JAVA, GSON, JDBC and PostgreSQL (dump.sql)
 
 * Tests were developed in Postman (postman.json)
 
