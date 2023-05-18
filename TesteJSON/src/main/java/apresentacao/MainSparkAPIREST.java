@@ -7,7 +7,6 @@ package apresentacao;
 import com.google.gson.Gson;
 import negocio.Order;
 import negocio.OrderController;
-import persistencia.OrderDAO;
 import static spark.Spark.delete;
 import static spark.Spark.get;
 import static spark.Spark.patch;
@@ -17,7 +16,7 @@ import static spark.Spark.put;
  *
  * @author iapereira
  */
-public class MainSpark {
+public class MainSparkAPIREST {
     public static void main(String[] args) {
         OrderController controller  = new OrderController();          
         
@@ -26,7 +25,7 @@ public class MainSpark {
         });
         
         delete("/orders/:id", (request, response) -> {
-            return controller.excluir(Integer.parseInt(request.params(":id")));
+            return controller.excluir(Integer.parseInt(request.params(":id")));            
         });
         
         patch("/orders", (request, response) -> {
