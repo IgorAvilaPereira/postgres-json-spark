@@ -20,8 +20,9 @@ public class MainSparkAPIREST {
     public static void main(String[] args) {
         OrderController controller  = new OrderController();          
         
-        get("/orders", (request, response) -> {            
-            return controller.listar();            
+        get("/orders", (request, response) -> {                        
+//          response.type("application/json");
+            return controller.listar();                        
         });
         
         delete("/orders/:id", (request, response) -> {
