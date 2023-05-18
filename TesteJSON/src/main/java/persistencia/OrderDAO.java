@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import negocio.*;
 
 /**
@@ -18,24 +19,26 @@ import negocio.*;
  * @author iapereira
  */
 public class OrderDAO {
+
     private final Gson gson;
-    
-    public OrderDAO(){
+
+    public OrderDAO() {
         this.gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
     }
-    
+
     public ArrayList<Order> listar() {
         try {
             ArrayList<Order> vetOrders = new ArrayList();
             String sql = "SELECT id, info->>'customer' as customer, info->>'items' as items FROM orders ORDER BY id;";
             try (Connection conn = new ConexaoPostgreSQL().getConexao()) {
-                PreparedStatement ps = conn.prepareStatement(sql);                
+                PreparedStatement ps = conn.prepareStatement(sql);
                 ResultSet rs = ps.executeQuery();
-                while (rs.next()){
+                while (rs.next()) {
                     Order order = new Order();
-                    order.setId(rs.getInt("id"));                    
+                    order.setId(rs.getInt("id"));
                     order.setCustomer(rs.getString("customer"));
-                    order.setItems(this.gson.fromJson(rs.getString("items"), ArrayList.class));
+                    Item vet[] = this.gson.fromJson(rs.getString("items"), Item[].class);
+                    order.getItems().addAll(Arrays.asList(vet));
                     vetOrders.add(order);
                 }
             }
@@ -45,14 +48,13 @@ public class OrderDAO {
         }
         return null;
     }
-    
-    
+
     public boolean atualizar(Order order) {
         try {
             String sql = "UPDATE orders SET info = ?::JSON WHERE id = ?;";
             try (Connection conn = new ConexaoPostgreSQL().getConexao()) {
-                PreparedStatement ps = conn.prepareStatement(sql);                                
-                ps.setObject(1,this.gson.toJson(order));
+                PreparedStatement ps = conn.prepareStatement(sql);
+                ps.setObject(1, this.gson.toJson(order));
                 ps.setInt(2, order.getId());
                 ps.executeUpdate();
             }
@@ -62,7 +64,7 @@ public class OrderDAO {
         }
         return false;
     }
-    
+
     public Order obter(int id) {
         try {
             Order order = new Order();
@@ -71,10 +73,11 @@ public class OrderDAO {
                 PreparedStatement ps = conn.prepareStatement(sql);
                 ps.setInt(1, id);
                 ResultSet rs = ps.executeQuery();
-                if (rs.next()){
-                    order.setId(rs.getInt("id"));                    
+                if (rs.next()) {
+                    order.setId(rs.getInt("id"));
                     order.setCustomer(rs.getString("customer"));
-                    order.setItems(this.gson.fromJson(rs.getString("items"), ArrayList.class));
+                    Item vet[] = this.gson.fromJson(rs.getString("items"), Item[].class);
+                    order.getItems().addAll(Arrays.asList(vet));
                 }
             }
             return order;
@@ -83,7 +86,7 @@ public class OrderDAO {
         }
         return null;
     }
-    
+
     public boolean excluir(int id) {
         try {
             String sql = "DELETE FROM orders WHERE id = ?";
