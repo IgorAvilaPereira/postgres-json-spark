@@ -27,13 +27,11 @@ public class MainSparkAPIREST {
             response.header("Content-Type", "application/json");
         });      
         
-        get("/orders", (request, response) -> {                        
-            response.type("application/json");    
+        get("/orders", (request, response) -> {        
             return controller.listar();                        
         });
         
-        get("/orders/:id", (request, response) -> {                        
-            response.type("application/json");    
+        get("/orders/:id", (request, response) -> {    
             return controller.obter(Integer.parseInt(request.params(":id")));                              
         });
         
