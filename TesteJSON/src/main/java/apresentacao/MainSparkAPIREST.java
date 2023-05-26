@@ -7,6 +7,8 @@ package apresentacao;
 import com.google.gson.Gson;
 import negocio.Order;
 import negocio.OrderController;
+import spark.Filter;
+import static spark.Spark.before;
 import static spark.Spark.delete;
 import static spark.Spark.get;
 import static spark.Spark.patch;
@@ -18,7 +20,12 @@ import static spark.Spark.put;
  */
 public class MainSparkAPIREST {
     public static void main(String[] args) {
-        OrderController controller  = new OrderController();          
+        OrderController controller  = new OrderController();    
+        
+        before((Filter) (request, response) -> {
+            response.header("Access-Control-Allow-Origin", "*");
+            response.header("Content-Type", "application/json");
+        });      
         
         get("/orders", (request, response) -> {                        
             response.type("application/json");    
