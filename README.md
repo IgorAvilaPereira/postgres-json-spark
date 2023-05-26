@@ -17,6 +17,10 @@
     }
  ```
 
+## Run Project
+
+Run _MainSparkAPIREST.java_
+
 ## OFF-TOPIC
 
 ### Mustache templates
